@@ -45,8 +45,12 @@ PIPE = subprocess.PIPE
 def _ParseCommandline(doc, argv):
   """Define command-line flags and return parsed argv."""
   parser = argparse.ArgumentParser(description=doc)
-  parser.add_argument('--py3output',
-                      default=sys.version_info.major == 3, action='store_true',
+  group = parser.add_mutually_exclusive_group()
+  group.add_argument('--py2output',
+                      default=False, action='store_true',
+                      help='Generate code for Python 2')
+  group.add_argument('--py3output',
+                      default=False, action='store_true',
                       help='Generate code for Python 3.4+')
   parser.add_argument('--matcher_bin',
                       default=(os.getenv('CLIF_MATCHER') or
@@ -81,6 +85,9 @@ def _ParseCommandline(doc, argv):
   args = parser.parse_args(argv[1:])
   if not args.prepend:
     args.prepend.append(sys.prefix+'/python/types.h')
+  # For upstream compatibility
+  if not args.py2output and not args.py3output:
+    args.py3output = sys.version_info.major == 3
   return args
 
 
