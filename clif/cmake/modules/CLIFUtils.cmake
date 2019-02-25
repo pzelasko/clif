@@ -178,6 +178,10 @@ function(add_pyclif_library name pyclif_file)
     set(GOOGLE_PROTOBUF_CXX_FLAGS "-I${GOOGLE_PROTOBUF_INCLUDE_DIRS}")
   endif(GOOGLE_PROTOBUF_INCLUDE_DIRS)
 
+  if (CXX_SYSTEM_INCLUDE_DIR)
+    set(ISYSTEM_CXX_FLAGS "-isystem ${CXX_SYSTEM_INCLUDE_DIR}")
+  endif(CXX_SYSTEM_INCLUDE_DIR)
+
   add_custom_command(
     OUTPUT ${gen_cc} ${gen_h} ${gen_init}
     COMMAND
@@ -188,7 +192,7 @@ function(add_pyclif_library name pyclif_file)
       -I${LLVM_TOOLS_DIR} -I${LLVM_TOOLS_BIN_DIR}
       --modname=${module_name}
       --matcher_bin=${CLIF_MATCHER}
-      "-f-I${PYTHON_INCLUDE_DIRS} -I${LLVM_TOOLS_DIR} -I${LLVM_TOOLS_BIN_DIR} ${GOOGLE_PROTOBUF_CXX_FLAGS} -std=c++11 ${PYCLIF_LIBRARY_CXX_FLAGS}"
+      "-f-I${PYTHON_INCLUDE_DIRS} -I${LLVM_TOOLS_DIR} -I${LLVM_TOOLS_BIN_DIR} ${GOOGLE_PROTOBUF_CXX_FLAGS} ${ISYSTEM_CXX_FLAGS} -std=c++11 ${PYCLIF_LIBRARY_CXX_FLAGS}"
       ${CMAKE_CURRENT_SOURCE_DIR}/${pyclif_file}
     VERBATIM
     # This step invokes the clif-matcher. Hence, we need it to be built before
