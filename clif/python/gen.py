@@ -734,15 +734,15 @@ def NewIter(wrapped_iter, ns, wrapper, wrapper_type):
 NewIter.name = 'new_iter'
 
 
-def IterNext(wrapped_iter, async, postconversion):
+def IterNext(wrapped_iter, is_async, postconversion):
   """Generate tp_iternext method implementation."""
   yield ''
   yield 'PyObject* iternext(PyObject* self) {'
-  if async:
+  if is_async:
     yield I+'PyThreadState* _save;'
     yield I+'Py_UNBLOCK_THREADS'
   yield I+'auto* v = %s.Next();' % wrapped_iter
-  if async:
+  if is_async:
     yield I+'Py_BLOCK_THREADS'
   yield I+'return v? Clif_PyObjFrom(*v, %s): nullptr;' % postconversion
   yield '}'
