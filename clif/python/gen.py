@@ -304,6 +304,7 @@ def TypeObject(tp_slots, slotgen, pyname, ctor, docstring, wname, fqclassname,
     yield '}'
   tp_slots['tp_init'] = '_ctor' if ctor else 'Clif_PyType_Inconstructible'
   tp_slots['tp_basicsize'] = 'sizeof(%s)' % wname
+  tp_slots['tp_print'] = '0'
   tp_slots['tp_itemsize'] = tp_slots['tp_version_tag'] = '0'
   tp_slots['tp_dictoffset'] = tp_slots['tp_weaklistoffset'] = '0'
   tp_slots['tp_flags'] = ' | '.join(tp_slots['tp_flags'])
