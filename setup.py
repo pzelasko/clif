@@ -26,7 +26,7 @@ except ImportError:
   import setuptools
 
 py_version = platform.python_version_tuple()
-if py_version < ('2', '7') or py_version[0] == '3' and py_version < ('3', '4'):
+if py_version < ('2', '7') or py_version[0] == '3' and int(py_version[1]) < 4:
   raise RuntimeError('Python version 2.7 or 3.4+ required')
 
 if not os.path.exists('clif/protos/ast_pb2.py'):
